@@ -9,11 +9,16 @@ import (
 	"go.nanomsg.org/mangos"
 	"go.nanomsg.org/mangos/protocol/pub"
 
+	"github.com/frogcovenant/dc-final/api"
+
 	// register transports
 	_ "go.nanomsg.org/mangos/transport/all"
 )
 
 var controllerAddress = "tcp://localhost:40899"
+var WORKLOADS = api.ACTIVE_WORKLOADS
+//var STATUS
+//var WORKERS 
 
 func die(format string, v ...interface{}) {
 	fmt.Fprintln(os.Stderr, fmt.Sprintf(format, v...))
@@ -37,6 +42,9 @@ func Start() {
 		// Could also use sock.RecvMsg to get header
 		d := date()
 		log.Printf("Controller: Publishing Date %s\n", d)
+		if len(WORKLOADS) > 0{
+			log.Printf("Workloads")
+		}
 		if err = sock.Send([]byte(d)); err != nil {
 			die("Failed publishing: %s", err.Error())
 		}
